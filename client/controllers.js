@@ -1,7 +1,7 @@
-var micControllers = angular.module('micControllers', ['ribbitAudienceRTC', 'ribbitPresenterRTC', 'ngSanitize']);
+var app = angular.module('app', ['ribbitAudienceRTC', 'ribbitPresenterRTC', 'ngSanitize']);
 
 
-// micControllers.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
+// app.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
 
 //   $scope.normalLogin = function(username, password) {
 
@@ -60,7 +60,7 @@ var micControllers = angular.module('micControllers', ['ribbitAudienceRTC', 'rib
 
 // }]);
 
-// micControllers.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
+// app.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
 //   $scope.room;
 
 //   $scope.createRoom = function(room) {
@@ -88,7 +88,7 @@ var micControllers = angular.module('micControllers', ['ribbitAudienceRTC', 'rib
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.
-micControllers.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope',
+app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope',
 '$firebaseObject', function($scope, $sce, audienceRTC, $rootScope, $firebaseObject) {
   // Initialize micStatus with default settings of power = off (false) and the option to "Turn on your mic!"
   // The power boolean is utilized to determine whether the views mic button will open a new peer connection with the presenter or close an existing connection.
@@ -217,7 +217,7 @@ micControllers.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.  
-micControllers.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScope',
+app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScope',
 '$firebaseObject', function($scope, $sce, presenterRTC, $rootScope, $firebaseObject) {
 
   var addVideoElem = function (url) {
@@ -342,7 +342,7 @@ micControllers.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC',
   };
 }]);
 
-micControllers.config(['baseRTCProvider', function(baseRTCProvider) {
+app.config(['baseRTCProvider', function(baseRTCProvider) {
   console.log('hey! in the config');
   
   baseRTCProvider.setSignalServer('ws://127.0.0.1:3434');

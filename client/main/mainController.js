@@ -1,4 +1,4 @@
-micControllers.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
+app.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
   $scope.room;
 
   $scope.createRoom = function(room) {

@@ -1,4 +1,4 @@
-micControllers.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
+app.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
 
   $scope.normalLogin = function(username, password) {
 

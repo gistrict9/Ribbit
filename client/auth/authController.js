@@ -16,26 +16,14 @@ micControllers.controller('AuthControl', ['$scope', 'Auth', function($scope, Aut
       console.log(result);
     };
 
-    // console.log(username, password);
-
     var authPromise = Auth.normalLogin(username, password);
-
-    // console.log(authPromise);
 
     authPromise.then(function() {
       console.log('promise has resolved');
     }).finally(function(){
       console.log('do something');
     });
-
-    // authPromise
-    //   .catch(function(err) {
-    //     console.error(err);
-    //   })
-    //   .then(function(result) {
-    //     console.log(result);
-    //   });
-      // successCb, errorCb, notifyCb);
+    
   };
 
   $scope.signup = function(username, password) {
@@ -53,6 +41,5 @@ micControllers.controller('AuthControl', ['$scope', 'Auth', function($scope, Aut
     Auth.gitLogin();
     console.log('gitlogin');
   };
-
 
 }]);

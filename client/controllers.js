@@ -88,8 +88,10 @@ app.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.
+
 app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope',
-'$firebaseObject', function($scope, $sce, audienceRTC, $rootScope, $firebaseObject) {
+'$firebaseObject', 'Question', function($scope, $sce, audienceRTC, $rootScope, $firebaseObject, Question) {
+
   // Initialize micStatus with default settings of power = off (false) and the option to "Turn on your mic!"
   // The power boolean is utilized to determine whether the views mic button will open a new peer connection with the presenter or close an existing connection.
   // The command will toggle based on the power state so the user is aware what will happen.
@@ -140,6 +142,16 @@ app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope'
       if (th.id === thumb) th.selected = true;
       else th.selected = false;
     })
+  };
+
+  $scope.submitQuestion = function(question) {
+    if ($scope.question) {
+      Question.addQuestion(question)
+      .then(function(question){
+        $scope.question = '';
+        $scope.confirmQuestion = 'All good!';
+      });
+    }
   };
 
   // only provide connect and disconnect functionality after ready (signal server is up, we have a media stream)
@@ -217,8 +229,9 @@ app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope'
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.  
+
 app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScope',
-'$firebaseObject', function($scope, $sce, presenterRTC, $rootScope, $firebaseObject) {
+'$firebaseObject', 'Question', function($scope, $sce, presenterRTC, $rootScope, $firebaseObject, Question) {
 
   var addVideoElem = function (url) {
     console.log('adding video!');
@@ -344,6 +357,12 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
             .attr('dy', '.75em')
             .text(function(d) { return d.value; });
   };
+
+
+  Question.getQuestions().then(function(questions) {
+    $scope.questions = questions.data;
+  });
+
 
   $scope.connections = [];
 

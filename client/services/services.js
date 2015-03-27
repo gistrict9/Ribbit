@@ -170,18 +170,26 @@ micServices.factory('Question', ['$http', '$q','$timeout','$http','$location','$
 function questionFactory($http, $q, $timeout, $http, $location, $rootScope) {
   var result = {};
 
-  result.getQuestions = function() {
+  result.getQuestions = function(roomname) {
+    var def = $q.defer();
+
     return $http({
       method: 'GET',
       url: '/questions',
+      params: {roomname: roomname}
     })
+    .success(function(data) {
+      def.resolve(data);
+    })
+
+    return def.promise;
   };
 
-  result.addQuestion = function(question) {
+  result.addQuestion = function(question, username, roomname) {
     return $http({
       method: 'POST',
       url: '/questions',
-      data: {question: question}
+      data: {question: question, username: username, roomname: roomname}
     })
     .then(function (response) {
       return response.data;

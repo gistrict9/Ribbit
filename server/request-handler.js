@@ -123,9 +123,13 @@ exports.accessRoom = function(req, res, rooms, inputRoom){
 
 exports.saveQuestion = function(req, res) {
   var question = req.body.question;
+  var username = req.body.username;
+  var roomname = req.body.roomname;
 
   new Question({
-    question: question
+    question: question,
+    username: username,
+    roomname: roomname
   }).save(function(err, question) {
     if (err) {
       res.send(400, 'There was a problem. Please resubmit your question.');
@@ -136,8 +140,13 @@ exports.saveQuestion = function(req, res) {
 };
 
 exports.getQuestions = function(req, res) {
-  Question.find().exec(function(err, questions) {
-    res.status(200);
-    res.json(questions);
-  });
+  console.log('req.query.roomname:', req.query.roomname);
+  var roomname = req.query.roomname;
+
+  Question.find()
+    .where('roomname').equals(roomname)
+    .exec(function(err, questions) {
+      res.status(200);
+      res.json(questions);
+    });
 };

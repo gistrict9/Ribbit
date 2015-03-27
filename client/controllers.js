@@ -143,10 +143,9 @@ app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope'
       else th.selected = false;
     })
   };
-
   $scope.submitQuestion = function(question) {
     if ($scope.question) {
-      Question.addQuestion(question)
+      Question.addQuestion(question, username, roomname)
       .then(function(question){
         $scope.question = '';
         $scope.confirmQuestion = 'All good!';
@@ -386,7 +385,7 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
   };
 
 
-  Question.getQuestions().then(function(questions) {
+  Question.getQuestions(roomname).then(function(questions) {
     $scope.questions = questions.data;
   });
 

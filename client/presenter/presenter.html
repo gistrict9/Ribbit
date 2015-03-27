@@ -1,8 +1,14 @@
 <svg id="graph"></svg>
-<h4>Questions</h4>
-<ul>
-  <li ng-repeat="question in questions">{{question.question}} | {{question.username}}</li>
-</ul>
+{{audience}}
+<div class="question-content">
+  <h1>Questions</h1>
+  <ul>
+    <li class="question" ng-repeat="question in questions">
+      <div>{{question.question}}</div>
+      <div class="asked-by">Asked by: <span style="color: #aaa;">{{question.username}}</span></div>
+    </li>
+  </ul>
+</div>
 <div class="first">
   <div class="large-12 columns">
     <div class="large-6 columns">

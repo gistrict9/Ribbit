@@ -147,6 +147,34 @@ input[type=text], input[type=text]:focus {
   width: 100%;
 }
 
+input[type=text].question-input {
+  text-align: left;
+  margin-left: 30px;
+  border-bottom: 1px solid white;
+}
+
+input[type=submit] {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
 .split input[type=text], .split input[type=text]:focus {
   text-align: center;
   background: none;
@@ -231,4 +259,23 @@ div.first a{
 
 #graph rect {
   fill: #E95F44;
+}
+
+.question-content {
+  margin: 15px 0 15px 15px;
+}
+
+.question-content h1 {
+  color: white;
+  text-align: left;
+}
+
+.question {
+  color: #2bc48e;
+  text-align: left;
+}
+
+.asked-by {
+  font-size: 16px;
+  color: #777;
 }

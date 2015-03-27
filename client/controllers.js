@@ -384,7 +384,7 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
             .text(function(d) { return d.value; });
   };
 
-
+  
   Question.getQuestions(roomname).then(function(questions) {
     $scope.questions = questions.data;
   });

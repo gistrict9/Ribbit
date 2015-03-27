@@ -246,6 +246,7 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
   var ref = new Firebase('https://popping-inferno-6077.firebaseio.com/');
   var audienceSync = $firebaseObject(ref.child(roomname));
   audienceSync.$bindTo($scope, 'audience').then(function(){
+    $scope.drawGraph();
     $scope.pollThumbs();
   });
 
@@ -276,84 +277,110 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
   });
 
     //DRAW THE GRAPH
-  var margin = {top: 20, right: 30, bottom: 30, left: 30},
-      width = window.innerWidth-20 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+  $scope.drawGraph = function() {
 
-  var d3Graph = d3.select('#graph')
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                  .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  var yScale = d3.scale.linear()
-                  .domain([0, 24]) //$scope.audience.size+1
-                  .range([height, 0]);
-
-  var xScale = d3.scale.ordinal()
-                    .domain($scope.thumbsData.map(function(thumb) { return thumb.text }))//$scope.audience.size
-                    .rangeRoundBands([0, width], .1);
-
-  var xAxis = d3.svg.axis()
-                      .scale(xScale)
-                      .orient('bottom');
-
-  var yAxis = d3.svg.axis()
-                      .scale(yScale)
-                      .orient('left');
+    $scope.margin = {top: 20, right: 30, bottom: 30, left: 35};
+    $scope.width = window.innerWidth-20 - $scope.margin.left - $scope.margin.right;
+    $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
+    $scope.yAxisValue = $scope.audience.size+2;
   
-  d3Graph.selectAll('.bar')
-    .data($scope.thumbsData, function(d) { return d.text})
-  .enter().append('g')
-    .attr('class', 'bar')
-    .attr('transform', function(d, i) { return 'translate(' + xScale(d.text) + ',0)'; })
-  .append('rect')
-      .attr('y', function(d) { return yScale(d.value) })
-      .attr('width', xScale.rangeBand())
-      .attr('height', function(d) { return height - yScale(d.value); })
+    $scope.d3Graph = d3.select('#graph')
+                      .attr("width", $scope.width + $scope.margin.left + $scope.margin.right)
+                      .attr("height", $scope.height + $scope.margin.top + $scope.margin.bottom)
+                    .append("g")
+                      .attr("transform", "translate(" + $scope.margin.left + "," + $scope.margin.top + ")");
   
-  d3.selectAll('.bar')
-    .append('text')
-          .attr('y', function(d) { return yScale(d.value) - 15; })
-          .attr('x', xScale.rangeBand() / 2)
-          .attr('dy', '.75em')
-          .text(function(d) { return d.value; });
-
-  // bar.append('svg:image')
-  //     .attr('y', function(d) { return yScale(d.value) - 15; })
-  //     .attr('x', barWidth / 2)
-  //     .attr('dy', '.75em')
-  //     .attr('xlink:href', function(d) {return d.src});
-  //     .text(function(d) { return d.value; });
-
-
-
-  d3Graph.append('g')
-          .attr('class', 'x-axis axis')
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis);
-
-  d3Graph.append("g")
-          .attr("class", "y axis")
-          .call(yAxis);
+    $scope.yScale = d3.scale.linear()
+                    .domain([0, $scope.yAxisValue])
+                    .range([$scope.height, 0]);
+  
+    $scope.xScale = d3.scale.ordinal()
+                      .domain($scope.thumbsData.map(function(thumb) { return thumb.text }))
+                      .rangeRoundBands([0, $scope.width], .1);
+  
+    $scope.xAxis = d3.svg.axis()
+                        .scale($scope.xScale)
+                        .orient('bottom');
+  
+    $scope.yAxis = d3.svg.axis()
+                        .scale($scope.yScale)
+                        .orient('left');
+    
+    $scope.d3Graph.selectAll('.bar')
+      .data($scope.thumbsData, function(d) { return d.text})
+    .enter().append('g')
+      .attr('class', 'bar')
+      .attr('transform', function(d, i) { return 'translate(' + $scope.xScale(d.text) + ',0)'; })
+    .append('rect')
+        .attr('y', function(d) { return $scope.yScale(d.value) })
+        .attr('width', $scope.xScale.rangeBand())
+        .attr('height', function(d) { return $scope.height - $scope.yScale(d.value); })
+    
+    d3.selectAll('.bar')
+      .append('text')
+            .attr('y', function(d) { return $scope.yScale(d.value) - 15; })
+            .attr('x', $scope.xScale.rangeBand() / 2)
+            .attr('dy', '.75em')
+            .text(function(d) { return d.value; });
+  
+    // bar.append('svg:image')
+    //     .attr('y', function(d) { return $scope.yScale(d.value) - 15; })
+    //     .attr('x', barWidth / 2)
+    //     .attr('dy', '.75em')
+    //     .attr('xlink:href', function(d) {return d.src});
+    //     .text(function(d) { return d.value; });
+  
+  
+  
+    $scope.d3Graph.append('g')
+            .attr('class', 'x-axis axis')
+            .attr("transform", "translate(0," + $scope.height + ")")
+            .call($scope.xAxis);
+  
+    $scope.d3Graph.append("g")
+            .attr("class", "y axis")
+            .call($scope.yAxis);
+  };
 
   //PHEW, that was a lot of graph.
 
   $scope.updateGraph = function(){
-    console.log('update');
 
-    d3Graph.selectAll('.bar')
+    //if the y scale has changed, redraw the axis
+
+    if ($scope.yAxisValue !== $scope.audience.size + 2) {
+      $scope.yAxisValue = $scope.audience.size + 2;
+
+      $scope.yScale = d3.scale.linear()
+                      .domain([0, $scope.yAxisValue])
+                      .range([$scope.height, 0]);
+
+      $scope.yAxis = d3.svg.axis()
+                          .scale($scope.yScale)
+                          .orient('left');
+
+
+      $scope.d3Graph.select('.y.axis').remove();
+      
+      $scope.d3Graph.append("g")
+              .attr("class", "y axis")
+              .call($scope.yAxis);
+    }
+
+    //redraw the bars and text
+    $scope.d3Graph.selectAll('.bar')
         .data($scope.thumbsData, function(d) { return d.text})
-        .attr('transform', function(d, i) { return 'translate(' + xScale(d.text) + ',0)'; })
+        .attr('transform', function(d, i) { return 'translate(' + $scope.xScale(d.text) + ',0)'; })
       .selectAll('rect')
             .data($scope.thumbsData, function(d) { return d.text})
-            .attr("y", function(d) { return yScale(d.value); })
-            .attr("height", function(d) { return height - yScale(d.value); });
+            .transition()
+            .attr("y", function(d) { return $scope.yScale(d.value); })
+            .attr("height", function(d) { return $scope.height - $scope.yScale(d.value); });
       
     d3.selectAll('.bar')
       .selectAll('text')
-            .attr('y', function(d) { return yScale(d.value) - 15; })
-            .attr('x', xScale.rangeBand() / 2)
+            .attr('y', function(d) { return $scope.yScale(d.value) - 15; })
+            .attr('x', $scope.xScale.rangeBand() / 2)
             .attr('dy', '.75em')
             .text(function(d) { return d.value; });
   };

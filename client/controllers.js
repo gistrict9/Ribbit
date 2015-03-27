@@ -229,8 +229,9 @@ app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope'
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.  
+
 app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScope',
-'$firebaseObject', function($scope, $sce, presenterRTC, $rootScope, $firebaseObject) {
+'$firebaseObject', 'Question', function($scope, $sce, presenterRTC, $rootScope, $firebaseObject, Question) {
 
   var addVideoElem = function (url) {
     console.log('adding video!');
@@ -356,6 +357,12 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
             .attr('dy', '.75em')
             .text(function(d) { return d.value; });
   };
+
+
+  Question.getQuestions().then(function(questions) {
+    $scope.questions = questions.data;
+  });
+
 
   $scope.connections = [];
 

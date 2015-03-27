@@ -212,7 +212,23 @@ div.first a{
 }
 
 #graph {
-  height: 500px;
-  width: auto;
-  background-color: red;
+/*  height: 500px;
+  width: 100%;*/
+  margin: 1em;
+  background-color: #FAFAFA;
+}
+
+.axis text {
+  font: 1em sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#graph rect {
+  fill: #E95F44;
 }

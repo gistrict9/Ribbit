@@ -1,90 +1,90 @@
-var app = angular.module('app', ['ribbitAudienceRTC', 'ribbitPresenterRTC', 'ngSanitize']);
+var app = angular.module('micControllers', ['ribbitAudienceRTC', 'ribbitPresenterRTC', 'ngSanitize']);
 
 
-// app.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
+app.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
 
-//   $scope.normalLogin = function(username, password) {
+  $scope.normalLogin = function(username, password) {
 
-//     var successCb = function(result) {
-//       console.log('made it to successCB of normalLogin controller');
-//       $location.url('/main');
-//     };
+    var successCb = function(result) {
+      console.log('made it to successCB of normalLogin controller');
+      $location.url('/main');
+    };
 
-//     var errorCb = function(err) {
-//       console.error(err);
-//       $location.url('/');
-//     };
+    var errorCb = function(err) {
+      console.error(err);
+      $location.url('/');
+    };
 
-//     var notifyCb = function(result) {
-//       console.log(result);
-//     };
+    var notifyCb = function(result) {
+      console.log(result);
+    };
 
-//     // console.log(username, password);
+    // console.log(username, password);
 
-//     var authPromise = Auth.normalLogin(username, password);
+    var authPromise = Auth.normalLogin(username, password);
 
-//     // console.log(authPromise);
+    // console.log(authPromise);
 
-//     authPromise.then(function() {
-//       console.log('promise has resolved');
-//     }).finally(function(){
-//       console.log('do something');
-//     });
+    authPromise.then(function() {
+      console.log('promise has resolved');
+    }).finally(function(){
+      console.log('do something');
+    });
 
-//     // authPromise
-//     //   .catch(function(err) {
-//     //     console.error(err);
-//     //   })
-//     //   .then(function(result) {
-//     //     console.log(result);
-//     //   });
-//       // successCb, errorCb, notifyCb);
-//   };
+    // authPromise
+    //   .catch(function(err) {
+    //     console.error(err);
+    //   })
+    //   .then(function(result) {
+    //     console.log(result);
+    //   });
+      // successCb, errorCb, notifyCb);
+  };
 
-//   $scope.signup = function(username, password) {
-//     console.log('signing up');
-//     Auth.signup(username, password)
-//       .catch(function(err) {
-//         console.error(err);
-//       })
-//       .then(function(result) {
-//         console.log(result);
-//       });
-//   };
+  $scope.signup = function(username, password) {
+    console.log('signing up');
+    Auth.signup(username, password)
+      .catch(function(err) {
+        console.error(err);
+      })
+      .then(function(result) {
+        console.log(result);
+      });
+  };
 
-//   $scope.gitLogin = function() {
-//     Auth.gitLogin();
-//     console.log('gitlogin');
-//   };
+  $scope.gitLogin = function() {
+    Auth.gitLogin();
+    console.log('gitlogin');
+  };
 
 
-// }]);
+}]);
 
-// app.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
-//   $scope.room;
+app.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
+  $scope.room;
 
-//   $scope.createRoom = function(room) {
-//     room = room || 'testRoom';
-//     var roomCheck = Room.tryToMakeRoom(room);
-//     console.log(roomCheck);
-//     console.log('let\'s create a room!');
-//   };
+  $scope.createRoom = function(room) {
+    room = room || 'testRoom';
+    var roomCheck = Room.tryToMakeRoom(room);
+    console.log(roomCheck);
+    console.log('let\'s create a room!');
+  };
 
-//   $scope.joinRoom = function(room) {
+  $scope.joinRoom = function(room) {
 
-//     // Send in the roomname to allow the server to check if the room exists.
-//     // If it does, the server will respond by sending back an object or string
-//     // that will show who the presenter for the room is.
-//     // We will use the presenter string/object to tell the audienceRTC who to
-//     // connect to.
+    // Send in the roomname to allow the server to check if the room exists.
+    // If it does, the server will respond by sending back an object or string
+    // that will show who the presenter for the room is.
+    // We will use the presenter string/object to tell the audienceRTC who to
+    // connect to.
 
-//     var returnPresenter = Room.returnPresenter($scope, room); 
-//     console.log('logging the returnPresenter variable: ', returnPresenter);
-//     console.log('logging out $scope.room to see if we stored room info: ', $scope.room);
-//     console.log('let\'s join a room!' , room);
-//   };
+    var returnPresenter = Room.returnPresenter($scope, room); 
+    console.log('logging the returnPresenter variable: ', returnPresenter);
+    console.log('logging out $scope.room to see if we stored room info: ', $scope.room);
+    console.log('let\'s join a room!' , room);
+  };
 
-// }]);
+}]);
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.
@@ -236,15 +236,113 @@ app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScop
     $scope.pollThumbs();
   });
 
-  $scope.thumbsData = [0,0,0,0,0]
+  $scope.thumbsData = 
+    [{src: '../assets/noun_ily-sign_62772.png', value: 0, text: 'Rockin\''},
+    {src: '../assets/noun_thumbs-up_61040.png', value: 0, text: 'Up'},
+    {src: '../assets/noun_thumb_104590.png',value: 0, text: 'Sideways'},
+    {src: '../assets/noun_thumbs-down_61036.png', value: 0, text: 'Down'},
+    {src: '../assets/noun_sleep_10297.png', value: 0, text: 'I\'m Bored'}];
 
   $scope.pollThumbs = function(){
-    console.log('poll');
-    $scope.thumbsData = [0,0,0,0,0];
-    _.each($scope.audience, function(member){
-      if (typeof member === 'object' && member !== null) $scope.thumbsData[member.thumb]++;
+    //reset to 0
+    _.each($scope.thumbsData, function(datum){
+      datum.value = 0;
     });
-    console.log($scope.thumbsData);
+
+    //count
+    _.each($scope.audience, function(member){
+      if (typeof member === 'object' && member !== null) $scope.thumbsData[member.thumb].value++;
+    });
+
+    $scope.updateGraph();
+    $scope.timer = window.setTimeout($scope.pollThumbs, 1000);
+  };
+
+  $scope.$on('$destroy', function(event){
+    window.clearTimeout($scope.timer);
+  });
+
+    //DRAW THE GRAPH
+  var margin = {top: 20, right: 30, bottom: 30, left: 30},
+      width = window.innerWidth-20 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+  var d3Graph = d3.select('#graph')
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var yScale = d3.scale.linear()
+                  .domain([0, 24]) //$scope.audience.size+1
+                  .range([height, 0]);
+
+  var xScale = d3.scale.ordinal()
+                    .domain($scope.thumbsData.map(function(thumb) { return thumb.text }))//$scope.audience.size
+                    .rangeRoundBands([0, width], .1);
+
+  var xAxis = d3.svg.axis()
+                      .scale(xScale)
+                      .orient('bottom');
+
+  var yAxis = d3.svg.axis()
+                      .scale(yScale)
+                      .orient('left');
+  
+  d3Graph.selectAll('.bar')
+    .data($scope.thumbsData, function(d) { return d.text})
+  .enter().append('g')
+    .attr('class', 'bar')
+    .attr('transform', function(d, i) { return 'translate(' + xScale(d.text) + ',0)'; })
+  .append('rect')
+      .attr('y', function(d) { return yScale(d.value) })
+      .attr('width', xScale.rangeBand())
+      .attr('height', function(d) { return height - yScale(d.value); })
+  
+  d3.selectAll('.bar')
+    .append('text')
+          .attr('y', function(d) { return yScale(d.value) - 15; })
+          .attr('x', xScale.rangeBand() / 2)
+          .attr('dy', '.75em')
+          .text(function(d) { return d.value; });
+
+  // bar.append('svg:image')
+  //     .attr('y', function(d) { return yScale(d.value) - 15; })
+  //     .attr('x', barWidth / 2)
+  //     .attr('dy', '.75em')
+  //     .attr('xlink:href', function(d) {return d.src});
+  //     .text(function(d) { return d.value; });
+
+
+
+  d3Graph.append('g')
+          .attr('class', 'x-axis axis')
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+  d3Graph.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+
+  //PHEW, that was a lot of graph.
+
+  $scope.updateGraph = function(){
+    console.log('update');
+
+    d3Graph.selectAll('.bar')
+        .data($scope.thumbsData, function(d) { return d.text})
+        .attr('transform', function(d, i) { return 'translate(' + xScale(d.text) + ',0)'; })
+      .selectAll('rect')
+            .data($scope.thumbsData, function(d) { return d.text})
+            .attr("y", function(d) { return yScale(d.value); })
+            .attr("height", function(d) { return height - yScale(d.value); });
+      
+    d3.selectAll('.bar')
+      .selectAll('text')
+            .attr('y', function(d) { return yScale(d.value) - 15; })
+            .attr('x', xScale.rangeBand() / 2)
+            .attr('dy', '.75em')
+            .text(function(d) { return d.value; });
   };
 
   $scope.connections = [];

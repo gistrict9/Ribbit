@@ -129,6 +129,9 @@ app.get('/loggedin', function(req, res) {
   // console.log('inside get/logged in, req.session', req.session);
   res.send(req.isAuthenticated() ? req.user : '0');
 });
+app.post('/questions', util.checkUser, function(req, res) {
+  handler.saveQuestion(req, res);
+});
 
 app.get('/questions', function(req, res){
   handler.getQuestions(req, res);

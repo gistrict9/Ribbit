@@ -130,6 +130,10 @@ app.get('/loggedin', function(req, res) {
   res.send(req.isAuthenticated() ? req.user : '0');
 });
 
+app.get('/questions', function(req, res){
+  handler.getQuestions(req, res);
+});
+
 app.post('/questions', util.checkUser, function(req, res, next){
   handler.saveQuestion(req, res);
 });

@@ -134,3 +134,10 @@ exports.saveQuestion = function(req, res) {
     }
   });
 };
+
+exports.getQuestions = function(req, res) {
+  Question.find().exec(function(err, questions) {
+    res.status(200);
+    res.json(questions);
+  });
+};

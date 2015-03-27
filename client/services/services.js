@@ -170,6 +170,13 @@ micServices.factory('Question', ['$http', '$q','$timeout','$http','$location','$
 function questionFactory($http, $q, $timeout, $http, $location, $rootScope) {
   var result = {};
 
+  result.getQuestions = function() {
+    return $http({
+      method: 'GET',
+      url: '/questions',
+    })
+  };
+
   result.addQuestion = function(question) {
     return $http({
       method: 'POST',

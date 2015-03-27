@@ -165,3 +165,21 @@ function authFactory($http, $q, $timeout, $http, $location, $rootScope) {
   return result;
 
 }]);
+
+micServices.factory('Question', ['$http', '$q','$timeout','$http','$location','$rootScope',
+function questionFactory($http, $q, $timeout, $http, $location, $rootScope) {
+  var result = {};
+
+  result.addQuestion = function(question) {
+    return $http({
+      method: 'POST',
+      url: '/questions',
+      data: {question: question}
+    })
+    .then(function (response) {
+      return response.data;
+    })
+  };
+
+  return result;
+}]);

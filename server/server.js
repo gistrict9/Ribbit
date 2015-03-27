@@ -11,6 +11,7 @@ var session = require('express-session');
 var db = require('./db-config.js').db;
 var mongoose = require('./db-config.js').mongoose;
 var User = require('./db-user.js');
+var Question = require('./db-question.js');
 var url = require("url");
 var MongoStore = require('connect-mongo')(session);
 
@@ -129,6 +130,10 @@ app.get('/loggedin', function(req, res) {
   res.send(req.isAuthenticated() ? req.user : '0');
 });
 
+app.post('/questions', util.checkUser, function(req, res, next){
+  handler.saveQuestion(req, res);
+});
+
 // Lecturer post room logic
 app.post('/rooms', util.checkUser, function(req, res, next){
   // console.log('post request to /rooms, logging req.user: ', req.user);
@@ -140,10 +145,6 @@ app.post('/rooms/asAudience', util.checkUser, function(req, res, next){
   // console.log('post request to /rooms/asAudience, logging req.user: ', req.user);
   // console.log('post request to /rooms/asAudience, logging req.session: ', req.session);
   handler.checkPresenter(req, res, rooms);
-});
-
-app.post('/questions', util.checkUser, function(req, res) {
-  handler.saveQuestion(req, res);
 });
 
 var server = app.listen(8000, function(){

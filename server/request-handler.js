@@ -123,16 +123,14 @@ exports.accessRoom = function(req, res, rooms, inputRoom){
 
 exports.saveQuestion = function(req, res) {
   var question = req.body.question;
-  var user = req.user.id; // probably need to change
 
   new Question({
-    question: question,
-    user: user
+    question: question
   }).save(function(err, question) {
     if (err) {
-      res.status(400).send('There was a problem. Please resubmit your question.');
+      res.send(400, 'There was a problem. Please resubmit your question.');
     } else {
-      res.status(201).send(question);
+      res.send(201, question);
     }
   });
 };

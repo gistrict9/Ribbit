@@ -1,94 +1,94 @@
-var micControllers = angular.module('micControllers', ['ribbitAudienceRTC', 'ribbitPresenterRTC', 'ngSanitize']);
+var app = angular.module('app', ['ribbitAudienceRTC', 'ribbitPresenterRTC', 'ngSanitize']);
 
 
-micControllers.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
+// app.controller('AuthControl', ['$scope', 'Auth', function($scope, Auth) {
 
-  $scope.normalLogin = function(username, password) {
+//   $scope.normalLogin = function(username, password) {
 
-    var successCb = function(result) {
-      console.log('made it to successCB of normalLogin controller');
-      $location.url('/main');
-    };
+//     var successCb = function(result) {
+//       console.log('made it to successCB of normalLogin controller');
+//       $location.url('/main');
+//     };
 
-    var errorCb = function(err) {
-      console.error(err);
-      $location.url('/');
-    };
+//     var errorCb = function(err) {
+//       console.error(err);
+//       $location.url('/');
+//     };
 
-    var notifyCb = function(result) {
-      console.log(result);
-    };
+//     var notifyCb = function(result) {
+//       console.log(result);
+//     };
 
-    // console.log(username, password);
+//     // console.log(username, password);
 
-    var authPromise = Auth.normalLogin(username, password);
+//     var authPromise = Auth.normalLogin(username, password);
 
-    // console.log(authPromise);
+//     // console.log(authPromise);
 
-    authPromise.then(function() {
-      console.log('promise has resolved');
-    }).finally(function(){
-      console.log('do something');
-    });
+//     authPromise.then(function() {
+//       console.log('promise has resolved');
+//     }).finally(function(){
+//       console.log('do something');
+//     });
 
-    // authPromise
-    //   .catch(function(err) {
-    //     console.error(err);
-    //   })
-    //   .then(function(result) {
-    //     console.log(result);
-    //   });
-      // successCb, errorCb, notifyCb);
-  };
+//     // authPromise
+//     //   .catch(function(err) {
+//     //     console.error(err);
+//     //   })
+//     //   .then(function(result) {
+//     //     console.log(result);
+//     //   });
+//       // successCb, errorCb, notifyCb);
+//   };
 
-  $scope.signup = function(username, password) {
-    console.log('signing up');
-    Auth.signup(username, password)
-      .catch(function(err) {
-        console.error(err);
-      })
-      .then(function(result) {
-        console.log(result);
-      });
-  };
+//   $scope.signup = function(username, password) {
+//     console.log('signing up');
+//     Auth.signup(username, password)
+//       .catch(function(err) {
+//         console.error(err);
+//       })
+//       .then(function(result) {
+//         console.log(result);
+//       });
+//   };
 
-  $scope.gitLogin = function() {
-    Auth.gitLogin();
-    console.log('gitlogin');
-  };
+//   $scope.gitLogin = function() {
+//     Auth.gitLogin();
+//     console.log('gitlogin');
+//   };
 
 
-}]);
+// }]);
 
-micControllers.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
-  $scope.room;
+// app.controller('MainControl', ['$scope', '$location', 'Room', function($scope, $location, Room) {
+//   $scope.room;
 
-  $scope.createRoom = function(room) {
-    room = room || 'testRoom';
-    var roomCheck = Room.tryToMakeRoom(room);
-    console.log(roomCheck);
-    console.log('let\'s create a room!');
-  };
+//   $scope.createRoom = function(room) {
+//     room = room || 'testRoom';
+//     var roomCheck = Room.tryToMakeRoom(room);
+//     console.log(roomCheck);
+//     console.log('let\'s create a room!');
+//   };
 
-  $scope.joinRoom = function(room) {
+//   $scope.joinRoom = function(room) {
 
-    // Send in the roomname to allow the server to check if the room exists.
-    // If it does, the server will respond by sending back an object or string
-    // that will show who the presenter for the room is.
-    // We will use the presenter string/object to tell the audienceRTC who to
-    // connect to.
+//     // Send in the roomname to allow the server to check if the room exists.
+//     // If it does, the server will respond by sending back an object or string
+//     // that will show who the presenter for the room is.
+//     // We will use the presenter string/object to tell the audienceRTC who to
+//     // connect to.
 
-    var returnPresenter = Room.returnPresenter($scope, room); 
-    console.log('logging the returnPresenter variable: ', returnPresenter);
-    console.log('logging out $scope.room to see if we stored room info: ', $scope.room);
-    console.log('let\'s join a room!' , room);
-  };
+//     var returnPresenter = Room.returnPresenter($scope, room); 
+//     console.log('logging the returnPresenter variable: ', returnPresenter);
+//     console.log('logging out $scope.room to see if we stored room info: ', $scope.room);
+//     console.log('let\'s join a room!' , room);
+//   };
 
-}]);
+// }]);
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.
-micControllers.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope',
+app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope',
 '$firebaseObject', function($scope, $sce, audienceRTC, $rootScope, $firebaseObject) {
   // Initialize micStatus with default settings of power = off (false) and the option to "Turn on your mic!"
   // The power boolean is utilized to determine whether the views mic button will open a new peer connection with the presenter or close an existing connection.
@@ -217,7 +217,7 @@ micControllers.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '
 
 // The AudienceController utilizes $rootScope to pass user information between controllers.
 // This is not an ideal implementation, and the 'Room' service should be utilized instead.  
-micControllers.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScope',
+app.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC', '$rootScope',
 '$firebaseObject', function($scope, $sce, presenterRTC, $rootScope, $firebaseObject) {
 
   var addVideoElem = function (url) {
@@ -342,7 +342,7 @@ micControllers.controller('PresenterControl', ['$scope', '$sce', 'presenterRTC',
   };
 }]);
 
-micControllers.config(['baseRTCProvider', function(baseRTCProvider) {
+app.config(['baseRTCProvider', function(baseRTCProvider) {
   console.log('hey! in the config');
   
   baseRTCProvider.setSignalServer('ws://127.0.0.1:3434');

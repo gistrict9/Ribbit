@@ -148,7 +148,7 @@ app.controller('AudienceControl', ['$scope', '$sce', 'audienceRTC', '$rootScope'
       Question.addQuestion(question, username, roomname)
       .then(function(question){
         $scope.question = '';
-        $scope.confirmQuestion = 'All good!';
+        $scope.confirmQuestion = 'Question submitted.';
       });
     }
   };

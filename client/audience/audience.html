@@ -7,9 +7,9 @@
     </div>
     <form ng-submit="submitQuestion(question)">
       <input type="text" ng-model="question" name="question" class="question-input" placeholder="Ask a question" />
+      <div ng-class="confirmQuestion ? 'confirm' : '' ">{{confirmQuestion}}</div>
       <input type="submit" id="submitQuestion" value="Ask" />
     </form>
-    {{confirmQuestion}}
   </div>
 </div>
 <div class="row first">
